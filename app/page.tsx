@@ -19,6 +19,7 @@ import { calculateExperience } from "@/lib/utils"
 import { MobileNav } from "@/components/mobile-nav"
 import { BackgroundGradient } from "@/components/background-gradient"
 import { ParticlesContainer } from "@/components/particles-container"
+import { MessageCircle } from "lucide-react";
 
 export default function Home() {
   // Calculate experience dynamically
@@ -238,15 +239,16 @@ export default function Home() {
                 <Linkedin className="h-4 w-4 text-indigo-300" />
                 <span className="text-gray-200">LinkedIn Profile</span>
               </motion.div>
-            </motion.div>
-            <motion.div
+              <motion.div
   variants={fadeIn}
   className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-white/20 cursor-pointer"
-  onClick={() => window.open("https://wa.me/9787394714", "_blank")}
+  onClick={() => window.open("https://wa.me/919876543210", "_blank")}
 >
   <MessageCircle className="h-4 w-4 text-green-400" />
   <span className="text-gray-200">Chat on WhatsApp</span>
 </motion.div>
+            </motion.div>
+            
 
             <motion.div
               className="flex flex-col sm:flex-row gap-4 mt-4"
