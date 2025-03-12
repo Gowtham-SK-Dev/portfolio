@@ -12,7 +12,8 @@ interface ExperienceCardProps {
   period: string
   description: string
   responsibilities: string[]
-  color: string
+  gradientFrom: string
+  gradientTo: string
 }
 
 export function ExperienceCard({
@@ -22,7 +23,8 @@ export function ExperienceCard({
   period,
   description,
   responsibilities,
-  color,
+  gradientFrom,
+  gradientTo,
 }: ExperienceCardProps) {
   return (
     <motion.div
@@ -30,35 +32,44 @@ export function ExperienceCard({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
+      whileHover={{ y: -5 }}
+      className="relative group"
     >
-      <Card className="group hover:shadow-lg transition-all duration-300 bg-white/5 backdrop-blur-sm border-transparent hover:border-primary/50">
-        <CardHeader className={`border-b border-muted/20`}>
+      <div
+        className={`absolute inset-0 bg-gradient-to-r ${gradientFrom} ${gradientTo} rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300`}
+      ></div>
+      <Card className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl">
+        <CardHeader className="border-b border-white/10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div>
-              <CardTitle className="text-xl bg-gradient-to-r from-gray-500 to-gray-700 bg-clip-text text-transparent">
+              <CardTitle
+                className={`text-xl bg-gradient-to-r ${gradientFrom} ${gradientTo} bg-clip-text text-transparent`}
+              >
                 {title}
               </CardTitle>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
-                <div className="flex items-center gap-1 text-muted-foreground">
+                <div className="flex items-center gap-1 text-gray-400">
                   <Building className="h-4 w-4" />
                   <span>{company}</span>
                 </div>
-                <div className="flex items-center gap-1 text-muted-foreground">
+                <div className="flex items-center gap-1 text-gray-400">
                   <MapPin className="h-4 w-4" />
                   <span>{location}</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-1 text-white bg-gradient-to-r from-gray-700 to-gray-900 px-3 py-1 rounded-full shadow-sm">
+            <div
+              className={`flex items-center gap-1 text-white bg-gradient-to-r ${gradientFrom} ${gradientTo} px-3 py-1 rounded-full shadow-sm`}
+            >
               <Calendar className="h-4 w-4" />
               <span>{period}</span>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4 pt-6">
+        <CardContent className="space-y-4 pt-6 text-gray-300">
           <p>{description}</p>
           <div className="space-y-2">
-            <h4 className="font-semibold">Key Responsibilities:</h4>
+            <h4 className="font-semibold text-white">Key Responsibilities:</h4>
             <ul className="space-y-2 list-disc pl-5">
               {responsibilities.map((responsibility, index) => (
                 <motion.li

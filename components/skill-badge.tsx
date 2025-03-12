@@ -6,10 +6,9 @@ import { cn } from "@/lib/utils"
 interface SkillBadgeProps {
   name: string
   className?: string
-  color: string
 }
 
-export function SkillBadge({ name, className, color }: SkillBadgeProps) {
+export function SkillBadge({ name, className }: SkillBadgeProps) {
   return (
     <motion.div
       whileHover={{ scale: 1.1 }}
@@ -20,7 +19,7 @@ export function SkillBadge({ name, className, color }: SkillBadgeProps) {
     >
       <div
         className={cn(
-          `inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-sm`,
+          "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-white/10 backdrop-blur-sm text-gray-200 border border-white/20 shadow-sm hover:bg-white/20",
           className,
         )}
       >

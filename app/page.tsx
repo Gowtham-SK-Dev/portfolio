@@ -15,20 +15,14 @@ import { ExperienceCard } from "@/components/experience-card"
 import { AnimatedText } from "@/components/animated-text"
 import { ParallaxSection } from "@/components/parallax-section"
 import { AnimateInView } from "@/components/animate-in-view"
-import { ColorfulBackground } from "@/components/colorful-background"
 import { calculateExperience } from "@/lib/utils"
+import { MobileNav } from "@/components/mobile-nav"
+import { BackgroundGradient } from "@/components/background-gradient"
+import { ParticlesContainer } from "@/components/particles-container"
 
 export default function Home() {
   // Calculate experience dynamically
   const experienceYears = calculateExperience(new Date("2021-04-01"))
-
-  // State for theme colors
-  // Professional color scheme
-  const colors = {
-    primary: "from-gray-700 to-gray-900",
-    secondary: "from-gray-800 to-black",
-    accent: "from-gray-600 to-gray-800",
-  }
 
   // Refs for scroll navigation
   const aboutRef = useRef<HTMLElement>(null)
@@ -87,11 +81,13 @@ export default function Home() {
   const y3 = useTransform(scrollY, [0, 1000], [0, -150])
 
   return (
-    <div className="flex min-h-screen flex-col relative overflow-hidden">
-      <ColorfulBackground />
+    <div className="flex min-h-screen flex-col relative overflow-hidden bg-[#0f0f13]">
+      {/* Background */}
+      <BackgroundGradient />
+      <ParticlesContainer />
 
       <motion.header
-        className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
+        className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/20 backdrop-blur-xl"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
@@ -99,14 +95,15 @@ export default function Home() {
         <div className="container flex h-16 items-center justify-between">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link href="/" className="font-bold text-xl">
-              <span className={`bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}>Gowtham</span>K
+              <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Gowtham</span>
+              <span className="text-white">K</span>
             </Link>
           </motion.div>
           <nav className="hidden md:flex gap-6">
             <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }}>
               <button
                 onClick={() => scrollToSection(aboutRef)}
-                className="text-sm font-medium hover:text-primary transition-colors"
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 About
               </button>
@@ -114,7 +111,7 @@ export default function Home() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }}>
               <button
                 onClick={() => scrollToSection(skillsRef)}
-                className="text-sm font-medium hover:text-primary transition-colors"
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 Skills
               </button>
@@ -122,7 +119,7 @@ export default function Home() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }}>
               <button
                 onClick={() => scrollToSection(experienceRef)}
-                className="text-sm font-medium hover:text-primary transition-colors"
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 Experience
               </button>
@@ -130,7 +127,7 @@ export default function Home() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }}>
               <button
                 onClick={() => scrollToSection(projectsRef)}
-                className="text-sm font-medium hover:text-primary transition-colors"
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 Projects
               </button>
@@ -138,21 +135,34 @@ export default function Home() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }}>
               <button
                 onClick={() => scrollToSection(contactRef)}
-                className="text-sm font-medium hover:text-primary transition-colors"
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 Contact
               </button>
             </motion.div>
           </nav>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              asChild
-              size="sm"
-              className="bg-gradient-to-r from-gray-700 to-gray-900 hover:shadow-lg hover:shadow-gray-900/20"
-            >
-              <button onClick={() => scrollToSection(contactRef)}>Hire Me</button>
-            </Button>
-          </motion.div>
+          <div className="flex items-center gap-4">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden md:block">
+              <Button
+                asChild
+                size="sm"
+                className="relative overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 group"
+              >
+                <button onClick={() => scrollToSection(contactRef)}>
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+                  Hire Me
+                </button>
+              </Button>
+            </motion.div>
+            <MobileNav
+              scrollToSection={scrollToSection}
+              aboutRef={aboutRef}
+              skillsRef={skillsRef}
+              experienceRef={experienceRef}
+              projectsRef={projectsRef}
+              contactRef={contactRef}
+            />
+          </div>
         </div>
       </motion.header>
       <main className="flex-1">
@@ -160,15 +170,15 @@ export default function Home() {
         <ParallaxSection className="container py-24 md:py-32 space-y-8 relative">
           {/* Floating elements */}
           <motion.div
-            className="absolute top-20 right-10 w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 opacity-20 blur-xl"
+            className="absolute top-20 right-10 w-32 h-32 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 opacity-20 blur-3xl"
             style={{ y: y1 }}
           />
           <motion.div
-            className="absolute bottom-20 left-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400 to-cyan-600 opacity-20 blur-xl"
+            className="absolute bottom-20 left-10 w-48 h-48 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 opacity-20 blur-3xl"
             style={{ y: y2 }}
           />
           <motion.div
-            className="absolute top-40 left-1/4 w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 opacity-20 blur-xl"
+            className="absolute top-40 left-1/4 w-40 h-40 rounded-full bg-gradient-to-br from-pink-400 to-red-600 opacity-20 blur-3xl"
             style={{ y: y3 }}
           />
 
@@ -179,7 +189,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-block rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 px-3 py-1 text-sm text-white shadow-lg"
+              className="inline-block rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 text-sm text-white border border-white/20 shadow-xl"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -189,11 +199,11 @@ export default function Home() {
             <AnimatedText
               text="Building Scalable Solutions for Real Problems"
               highlightText="Scalable Solutions"
-              className="text-4xl md:text-6xl font-bold tracking-tighter"
-              highlightClassName={`bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}
+              className="text-4xl md:text-6xl font-bold tracking-tighter text-white"
+              highlightClassName="bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent"
             />
             <motion.p
-              className="max-w-[700px] text-muted-foreground md:text-xl"
+              className="max-w-[700px] text-gray-300 md:text-xl"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
@@ -209,24 +219,24 @@ export default function Home() {
             >
               <motion.div
                 variants={fadeIn}
-                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm"
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-white/20"
               >
-                <Phone className="h-4 w-4 text-primary" />
-                <span>9787304714</span>
+                <Phone className="h-4 w-4 text-indigo-300" />
+                <span className="text-gray-200">9787304714</span>
               </motion.div>
               <motion.div
                 variants={fadeIn}
-                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm"
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-white/20"
               >
-                <Mail className="h-4 w-4 text-primary" />
-                <span>gowtham3cse@gmail.com</span>
+                <Mail className="h-4 w-4 text-indigo-300" />
+                <span className="text-gray-200">gowtham3cse@gmail.com</span>
               </motion.div>
               <motion.div
                 variants={fadeIn}
-                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm"
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-white/20"
               >
-                <Linkedin className="h-4 w-4 text-primary" />
-                <span>LinkedIn Profile</span>
+                <Linkedin className="h-4 w-4 text-indigo-300" />
+                <span className="text-gray-200">LinkedIn Profile</span>
               </motion.div>
             </motion.div>
             <motion.div
@@ -239,9 +249,10 @@ export default function Home() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-gray-700 to-gray-900 hover:shadow-lg hover:shadow-gray-900/20"
+                  className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-500/20 border-0"
                 >
                   <button onClick={() => scrollToSection(projectsRef)}>
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-400 to-purple-400 opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
                     View My Work <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </Button>
@@ -251,7 +262,7 @@ export default function Home() {
                   variant="outline"
                   size="lg"
                   asChild
-                  className="border-2 hover:border-primary transition-all duration-300"
+                  className="border border-white/20 text-white bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
                 >
                   <button onClick={() => scrollToSection(contactRef)}>Contact Me</button>
                 </Button>
@@ -262,17 +273,17 @@ export default function Home() {
 
         {/* About Section */}
         <section ref={aboutRef} id="about" className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f13]/80 via-[#151520]/80 to-[#0f0f13]/80 opacity-80"></div>
           <AnimateInView>
             <div className="container space-y-12 relative z-10">
               <div className="space-y-4 text-center">
-                <motion.h2
-                  className={`text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}
-                  variants={fadeIn}
-                >
-                  About Me
-                </motion.h2>
-                <motion.p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl" variants={fadeIn}>
+                <motion.div className="inline-block mx-auto" variants={fadeIn}>
+                  <div className="relative">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">About Me</h2>
+                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                  </div>
+                </motion.div>
+                <motion.p className="mx-auto max-w-[700px] text-gray-300 md:text-xl" variants={fadeIn}>
                   Backend developer focused on building and optimizing scalable, high-performance systems.
                 </motion.p>
               </div>
@@ -283,30 +294,72 @@ export default function Home() {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
               >
-                <motion.p variants={fadeIn} className="bg-white/5 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-                  I'm a backend developer with {experienceYears} years of experience building and optimizing scalable,
-                  high-performance systems. Proficient in PHP (Laravel) and Node.js, with expertise in secure API
-                  integrations and efficient database management. Known for a collaborative approach and commitment to
-                  delivering reliable, innovative solutions.
-                </motion.p>
-                <motion.p variants={fadeIn} className="bg-white/5 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-                  Throughout my career, I've spearheaded end-to-end backend development for projects like TVS-FIT,
-                  Partsmart, and Olabi, managing requirement analysis, testing, and deployment. I've designed and
-                  developed RESTful APIs and database structures, ensuring seamless system integration and scalability.
-                </motion.p>
-                <motion.p variants={fadeIn} className="bg-white/5 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-                  My work has resulted in significant improvements to application reliability and functionality,
-                  achieving a 30% reduction in system issues through proactive code optimizations.
-                </motion.p>
-                <motion.div variants={fadeIn} className="pt-4 bg-white/5 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-bold mb-2">Education</h3>
-                  <p>
-                    <span className="font-medium">B.E. in Computer Science Engineering</span>
-                    <br />
-                    Anna University, Tamil Nadu, India
-                    <br />
-                    August 2016 – May 2020
-                  </p>
+                <motion.div
+                  variants={fadeIn}
+                  className="relative group"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
+                    <p className="text-gray-200">
+                      I'm a backend developer with {experienceYears} years of experience building and optimizing
+                      scalable, high-performance systems. Proficient in PHP (Laravel) and Node.js, with expertise in
+                      secure API integrations and efficient database management. Known for a collaborative approach and
+                      commitment to delivering reliable, innovative solutions.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  variants={fadeIn}
+                  className="relative group"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
+                    <p className="text-gray-200">
+                      Throughout my career, I've spearheaded end-to-end backend development for projects like TVS-FIT,
+                      Partsmart, and Olabi, managing requirement analysis, testing, and deployment. I've designed and
+                      developed RESTful APIs and database structures, ensuring seamless system integration and
+                      scalability.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  variants={fadeIn}
+                  className="relative group"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
+                    <p className="text-gray-200">
+                      My work has resulted in significant improvements to application reliability and functionality,
+                      achieving a 30% reduction in system issues through proactive code optimizations.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  variants={fadeIn}
+                  className="relative group"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
+                    <h3 className="text-xl font-bold mb-2 text-white">Education</h3>
+                    <p className="text-gray-200">
+                      <span className="font-medium text-gray-100">B.E. in Computer Science Engineering</span>
+                      <br />
+                      Anna University, Tamil Nadu, India
+                      <br />
+                      August 2016 – May 2020
+                    </p>
+                  </div>
                 </motion.div>
               </motion.div>
             </div>
@@ -315,17 +368,19 @@ export default function Home() {
 
         {/* Skills Section */}
         <section ref={skillsRef} id="skills" className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f13]/80 via-[#0f0f13]/80 to-[#151520]/80 opacity-80"></div>
           <AnimateInView>
             <div className="container space-y-12 relative z-10">
               <div className="space-y-4 text-center">
-                <motion.h2
-                  className={`text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}
-                  variants={fadeIn}
-                >
-                  My Skills
-                </motion.h2>
-                <motion.p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl" variants={fadeIn}>
+                <motion.div className="inline-block mx-auto" variants={fadeIn}>
+                  <div className="relative">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
+                      My Skills
+                    </h2>
+                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                  </div>
+                </motion.div>
+                <motion.p className="mx-auto max-w-[700px] text-gray-300 md:text-xl" variants={fadeIn}>
                   A comprehensive set of technologies I've mastered over the years.
                 </motion.p>
               </div>
@@ -339,88 +394,96 @@ export default function Home() {
                 <motion.div
                   variants={fadeIn}
                   whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                  className="rounded-lg border bg-white/5 backdrop-blur-sm p-6 shadow-lg"
+                  className="relative group"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`p-2 rounded-full bg-gradient-to-r ${colors.primary} transition-all duration-1000`}>
-                      <Code className="h-6 w-6 text-white" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative rounded-xl border border-white/20 bg-white/10 backdrop-blur-md p-6 shadow-xl">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="p-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
+                        <Code className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white">Languages & Frameworks</h3>
                     </div>
-                    <h3 className="text-xl font-bold">Languages & Frameworks</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <SkillBadge name="PHP" color={colors.primary} />
-                    <SkillBadge name="Laravel" color={colors.primary} />
-                    <SkillBadge name="Node.js" color={colors.primary} />
-                    <SkillBadge name="AngularJS" color={colors.primary} />
-                    <SkillBadge name="JavaScript" color={colors.primary} />
-                    <SkillBadge name="HTML/CSS" color={colors.primary} />
-                    <SkillBadge name="Zend" color={colors.primary} />
+                    <div className="flex flex-wrap gap-2">
+                      <SkillBadge name="PHP" />
+                      <SkillBadge name="Laravel" />
+                      <SkillBadge name="Node.js" />
+                      <SkillBadge name="AngularJS" />
+                      <SkillBadge name="JavaScript" />
+                      <SkillBadge name="HTML/CSS" />
+                      <SkillBadge name="Zend" />
+                    </div>
                   </div>
                 </motion.div>
                 <motion.div
                   variants={fadeIn}
                   whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                  className="rounded-lg border bg-white/5 backdrop-blur-sm p-6 shadow-lg"
+                  className="relative group"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div
-                      className={`p-2 rounded-full bg-gradient-to-r ${colors.secondary} transition-all duration-1000`}
-                    >
-                      <Database className="h-6 w-6 text-white" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative rounded-xl border border-white/20 bg-white/10 backdrop-blur-md p-6 shadow-xl">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="p-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500">
+                        <Database className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white">Database & Storage</h3>
                     </div>
-                    <h3 className="text-xl font-bold">Database & Storage</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <SkillBadge name="MySQL" color={colors.secondary} />
-                    <SkillBadge name="Database Optimization" color={colors.secondary} />
-                    <SkillBadge name="Oracle ERP" color={colors.secondary} />
-                    <SkillBadge name="Cloud Storage" color={colors.secondary} />
+                    <div className="flex flex-wrap gap-2">
+                      <SkillBadge name="MySQL" />
+                      <SkillBadge name="Database Optimization" />
+                      <SkillBadge name="Oracle ERP" />
+                      <SkillBadge name="Cloud Storage" />
+                    </div>
                   </div>
                 </motion.div>
                 <motion.div
                   variants={fadeIn}
                   whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                  className="rounded-lg border bg-white/5 backdrop-blur-sm p-6 shadow-lg"
+                  className="relative group"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`p-2 rounded-full bg-gradient-to-r ${colors.primary} transition-all duration-1000`}>
-                      <Server className="h-6 w-6 text-white" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-red-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative rounded-xl border border-white/20 bg-white/10 backdrop-blur-md p-6 shadow-xl">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="p-2 rounded-full bg-gradient-to-r from-pink-500 to-red-500">
+                        <Server className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white">Tools & Libraries</h3>
                     </div>
-                    <h3 className="text-xl font-bold">Tools & Libraries</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <SkillBadge name="JWT" color={colors.primary} />
-                    <SkillBadge name="Crypt" color={colors.primary} />
-                    <SkillBadge name="Curl" color={colors.primary} />
-                    <SkillBadge name="Guzzle" color={colors.primary} />
-                    <SkillBadge name="Postman" color={colors.primary} />
-                    <SkillBadge name="Git" color={colors.primary} />
-                    <SkillBadge name="FileZilla" color={colors.primary} />
-                    <SkillBadge name="PM2" color={colors.primary} />
-                    <SkillBadge name="Kendo" color={colors.primary} />
+                    <div className="flex flex-wrap gap-2">
+                      <SkillBadge name="JWT" />
+                      <SkillBadge name="Crypt" />
+                      <SkillBadge name="Curl" />
+                      <SkillBadge name="Guzzle" />
+                      <SkillBadge name="Postman" />
+                      <SkillBadge name="Git" />
+                      <SkillBadge name="FileZilla" />
+                      <SkillBadge name="PM2" />
+                      <SkillBadge name="Kendo" />
+                    </div>
                   </div>
                 </motion.div>
                 <motion.div
                   variants={fadeIn}
                   whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                  className="rounded-lg border bg-white/5 backdrop-blur-sm p-6 shadow-lg"
+                  className="relative group"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div
-                      className={`p-2 rounded-full bg-gradient-to-r ${colors.secondary} transition-all duration-1000`}
-                    >
-                      <Globe className="h-6 w-6 text-white" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="relative rounded-xl border border-white/20 bg-white/10 backdrop-blur-md p-6 shadow-xl">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="p-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500">
+                        <Globe className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white">Architecture & Integration</h3>
                     </div>
-                    <h3 className="text-xl font-bold">Architecture & Integration</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <SkillBadge name="MVC" color={colors.secondary} />
-                    <SkillBadge name="Microservices" color={colors.secondary} />
-                    <SkillBadge name="API Development" color={colors.secondary} />
-                    <SkillBadge name="RESTful APIs" color={colors.secondary} />
-                    <SkillBadge name="Razorpay" color={colors.secondary} />
-                    <SkillBadge name="Front-End Integration" color={colors.secondary} />
-                    <SkillBadge name="ERP Integration" color={colors.secondary} />
+                    <div className="flex flex-wrap gap-2">
+                      <SkillBadge name="MVC" />
+                      <SkillBadge name="Microservices" />
+                      <SkillBadge name="API Development" />
+                      <SkillBadge name="RESTful APIs" />
+                      <SkillBadge name="Razorpay" />
+                      <SkillBadge name="Front-End Integration" />
+                      <SkillBadge name="ERP Integration" />
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
@@ -430,18 +493,20 @@ export default function Home() {
 
         {/* Experience Section */}
         <section ref={experienceRef} id="experience" className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#151520]/80 via-[#151520]/80 to-[#0f0f13]/80 opacity-80"></div>
           <AnimateInView>
             <div className="container space-y-12 relative z-10">
               <div className="space-y-4 text-center">
-                <motion.h2
-                  className={`text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}
-                  variants={fadeIn}
-                >
-                  Work Experience
-                </motion.h2>
-                <motion.p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl" variants={fadeIn}>
-                  My professional journey as a Software ENgineer.
+                <motion.div className="inline-block mx-auto" variants={fadeIn}>
+                  <div className="relative">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
+                      Work Experience
+                    </h2>
+                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                  </div>
+                </motion.div>
+                <motion.p className="mx-auto max-w-[700px] text-gray-300 md:text-xl" variants={fadeIn}>
+                  My professional journey as a Software Engineer.
                 </motion.p>
               </div>
               <motion.div
@@ -465,7 +530,8 @@ export default function Home() {
                       "Collaborating with cross-functional teams to deliver high-quality software solutions.",
                       "Upgrading skills in Node.js, Zend, and Kendo frameworks.",
                     ]}
-                    color={colors.primary}
+                    gradientFrom="from-indigo-500"
+                    gradientTo="to-purple-500"
                   />
                 </motion.div>
 
@@ -483,7 +549,8 @@ export default function Home() {
                       "Optimized backend processes for secure, high-performance web applications.",
                       "Improved application reliability and functionality, achieving a 30% reduction in system issues through proactive code optimizations.",
                     ]}
-                    color={colors.secondary}
+                    gradientFrom="from-blue-500"
+                    gradientTo="to-cyan-500"
                   />
                 </motion.div>
 
@@ -501,7 +568,8 @@ export default function Home() {
                       "API Development: Developed and integrated RESTful APIs for various applications, ensuring secure and efficient communication between systems.",
                       "Project Highlights: Delivered full-stack solutions, collaborated with cross-functional teams, and ensured smooth deployment and post-production support.",
                     ]}
-                    color={colors.primary}
+                    gradientFrom="from-pink-500"
+                    gradientTo="to-red-500"
                   />
                 </motion.div>
               </motion.div>
@@ -511,17 +579,19 @@ export default function Home() {
 
         {/* Projects Section */}
         <section ref={projectsRef} id="projects" className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f13]/80 via-[#0f0f13]/80 to-[#151520]/80 opacity-80"></div>
           <AnimateInView>
             <div className="container space-y-12 relative z-10">
               <div className="space-y-4 text-center">
-                <motion.h2
-                  className={`text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}
-                  variants={fadeIn}
-                >
-                  Featured Projects
-                </motion.h2>
-                <motion.p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl" variants={fadeIn}>
+                <motion.div className="inline-block mx-auto" variants={fadeIn}>
+                  <div className="relative">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
+                      Featured Projects
+                    </h2>
+                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                  </div>
+                </motion.div>
+                <motion.p className="mx-auto max-w-[700px] text-gray-300 md:text-xl" variants={fadeIn}>
                   A selection of my most impactful work over the past {experienceYears} years.
                 </motion.p>
               </div>
@@ -537,7 +607,7 @@ export default function Home() {
                     title="Olabi"
                     description="A SAAS software integrated with ERP systems, providing comprehensive business solutions with real-time data synchronization."
                     tags={["Node.js", "Zend", "Kendo", "ERP Integration"]}
-                    image="/placeholder.svg?height=400&width=600"
+                    image="/images/olabi-dashboard.jpg"
                     period="February 2025 – Present"
                     highlights={[
                       "Seamless integration with multiple ERP systems",
@@ -545,7 +615,8 @@ export default function Home() {
                       "Scalable architecture supporting multiple tenants",
                       "Comprehensive user management and access control",
                     ]}
-                    color={colors.primary}
+                    gradientFrom="from-indigo-500"
+                    gradientTo="to-purple-500"
                   />
                 </motion.div>
                 <motion.div variants={fadeIn}>
@@ -553,7 +624,7 @@ export default function Home() {
                     title="TVS Partsmart"
                     description="E-commerce platform for vehicle parts integrated with Oracle ERP for real-time data synchronization. Allows users to browse parts, add items to a cart, and complete purchases online."
                     tags={["Laravel", "AngularJS", "Oracle ERP", "Razorpay", "MySQL"]}
-                    image="/placeholder.svg?height=400&width=600"
+                    image="/images/partsmart-ecommerce.jpg"
                     period="April 2021 – February 2025"
                     highlights={[
                       "Integrated with Razorpay payment gateway for secure and reliable transactions",
@@ -561,7 +632,8 @@ export default function Home() {
                       "Automates order processing by pushing all order data directly to the ERP system",
                       "Developed both mobile and web applications",
                     ]}
-                    color={colors.secondary}
+                    gradientFrom="from-blue-500"
+                    gradientTo="to-cyan-500"
                   />
                 </motion.div>
                 <motion.div variants={fadeIn}>
@@ -569,7 +641,7 @@ export default function Home() {
                     title="FIT Valuation"
                     description="End-to-end vehicle inspection system generating detailed condition reports. Streamlined the inspection process, capturing photos, videos, and condition details, all securely stored in the cloud."
                     tags={["Node.js", "PHP", "MySQL", "Cloud Storage"]}
-                    image="/placeholder.svg?height=400&width=600"
+                    image="/images/fit-valuation-app.jpg"
                     period="September 2024 – February 2025"
                     highlights={[
                       "Implemented a multi-stage verification (pre-QC and QC) to ensure report accuracy",
@@ -577,7 +649,8 @@ export default function Home() {
                       "Delivered automated, comprehensive PDF reports, documenting all inspection stages",
                       "Developed both mobile and web applications",
                     ]}
-                    color={colors.primary}
+                    gradientFrom="from-pink-500"
+                    gradientTo="to-red-500"
                   />
                 </motion.div>
                 <motion.div variants={fadeIn}>
@@ -585,7 +658,7 @@ export default function Home() {
                     title="TravelXMRC"
                     description="All-encompassing solution for managing employee trips efficiently across multiple tenants. Designed a seamless workflow from trip initiation to claim requests and processing."
                     tags={["Laravel", "MySQL", "Employee Management"]}
-                    image="/placeholder.svg?height=400&width=600"
+                    image="/images/travel-management-system.jpg"
                     period="March 2023 – July 2023"
                     highlights={[
                       "Introduced adaptive claim calculations based on individual user data",
@@ -593,7 +666,8 @@ export default function Home() {
                       "Delivered automated user data synchronization process with comprehensive reporting",
                       "Enhanced visibility through confirmation emails for all workflows",
                     ]}
-                    color={colors.secondary}
+                    gradientFrom="from-amber-500"
+                    gradientTo="to-orange-500"
                   />
                 </motion.div>
               </motion.div>
@@ -603,36 +677,38 @@ export default function Home() {
 
         {/* Contact Section */}
         <section ref={contactRef} id="contact" className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#151520]/80 via-[#151520]/80 to-[#0f0f13]/80 opacity-80"></div>
           <AnimateInView>
             <div className="container space-y-12 relative z-10">
               <div className="space-y-4 text-center">
-                <motion.h2
-                  className={`text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r ${colors.primary} bg-clip-text text-transparent`}
-                  variants={fadeIn}
-                >
-                  Get In Touch
-                </motion.h2>
-                <motion.p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl" variants={fadeIn}>
+                <motion.div className="inline-block mx-auto" variants={fadeIn}>
+                  <div className="relative">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
+                      Get In Touch
+                    </h2>
+                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                  </div>
+                </motion.div>
+                <motion.p className="mx-auto max-w-[700px] text-gray-300 md:text-xl" variants={fadeIn}>
                   Interested in working together? Let's discuss your project.
                 </motion.p>
               </div>
               <motion.div className="mx-auto max-w-2xl" variants={fadeIn}>
-                <ContactForm colors={colors} />
+                <ContactForm />
               </motion.div>
             </div>
           </AnimateInView>
         </section>
       </main>
       <motion.footer
-        className="border-t py-6 md:py-8 relative z-10 bg-background/80 backdrop-blur-sm"
+        className="border-t border-white/10 py-6 md:py-8 relative z-10 bg-[#0f0f13]/90 backdrop-blur-md"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
       >
         <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+          <p className="text-center text-sm leading-loose text-gray-400 md:text-left">
             © {new Date().getFullYear()} Gowtham K. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
@@ -641,7 +717,7 @@ export default function Home() {
                 href="https://github.com"
                 target="_blank"
                 rel="noreferrer"
-                className="bg-gradient-to-r from-gray-700 to-gray-900 p-2 rounded-full text-white"
+                className="bg-white/10 backdrop-blur-sm p-2 rounded-full text-white border border-white/20 hover:bg-white/20 transition-colors duration-300"
               >
                 <Github className="h-5 w-5" />
                 <span className="sr-only">GitHub</span>
@@ -652,7 +728,7 @@ export default function Home() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className={`bg-gradient-to-r ${colors.secondary} p-2 rounded-full text-white transition-all duration-1000`}
+                className="bg-white/10 backdrop-blur-sm p-2 rounded-full text-white border border-white/20 hover:bg-white/20 transition-colors duration-300"
               >
                 <Linkedin className="h-5 w-5" />
                 <span className="sr-only">LinkedIn</span>
@@ -661,7 +737,7 @@ export default function Home() {
             <motion.div whileHover={{ y: -5, scale: 1.2 }} whileTap={{ scale: 0.9 }}>
               <Link
                 href="mailto:gowtham3cse@gmail.com"
-                className="bg-gradient-to-r from-gray-700 to-gray-900 p-2 rounded-full text-white"
+                className="bg-white/10 backdrop-blur-sm p-2 rounded-full text-white border border-white/20 hover:bg-white/20 transition-colors duration-300"
               >
                 <Mail className="h-5 w-5" />
                 <span className="sr-only">Email</span>
