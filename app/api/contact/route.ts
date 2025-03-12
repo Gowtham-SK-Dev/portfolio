@@ -217,7 +217,7 @@ export async function POST(request: Request) {
     if (success) {
       return NextResponse.json({ success: true, message: "Form submitted successfully" })
     } else {
-      return NextResponse.json({ success: true, message: "Data saved in Local Server" }, { status: 500 })
+      return NextResponse.json({ success: false, message: "Failed to save form data" }, { status: 500 })
     }
   } catch (error) {
     console.error("Error processing form submission:", error)
